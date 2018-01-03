@@ -1,5 +1,8 @@
 package com.goplayer.video_player
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.annotation.TargetApi
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,9 +14,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.goplayer.R
 import com.goplayer.room_db.Videos
 import com.goplayer.utils.MyApp
@@ -26,9 +32,12 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import android.view.ViewAnimationUtils
+import com.goplayer.utils.hideByCircularAnimation
+import com.goplayer.utils.showByCircularAnimation
 
 
-class VideoListActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class VideoListActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     private var videoList: ArrayList<String>? = null
     private var videosRCV: RecyclerView? = null
@@ -70,10 +79,20 @@ class VideoListActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
             initialiseRCV()
         }
 
+        backIV.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.backIV -> searchRL.hideByCircularAnimation()
+        }
     }
 
     private fun initToolbar() {
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     override fun onRefresh() {
@@ -94,7 +113,6 @@ class VideoListActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         files.filter { it.isDirectory }
                 .forEach {
                     // is directory
-
                     val selection = MediaStore.Video.Media.DATA + " like?"
                     val selectionArgs = arrayOf("%" + it.absoluteFile.name + "%")
                     val projection = arrayOf(MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.DISPLAY_NAME)
@@ -221,7 +239,6 @@ class VideoListActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
     override fun onBackPressed() {
         if (isInside) {
-
             resetToInitialList()
             return
         } else {
@@ -282,9 +299,36 @@ class VideoListActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
                 } else {
                     finish()
                 }
+
+            R.id.actionSearch -> doSearchOnList()
         }
         return super.onOptionsItemSelected(item)
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun doSearchOnList() {
+        searchRL.showByCircularAnimation()
+        if(!isInside){
+
+            searchET.addTextChangedListener(object : TextWatcher{
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    var searchList: ArrayList<String> = ArrayList()
+                    if (videosFolders != null && videosFolders!!.isNotEmpty()){
+                        videosFolders!!.filterTo(searchList) { it.contains(p0.toString()) }
+                    }
+                }
+
+            })
+        }
     }
 
 }

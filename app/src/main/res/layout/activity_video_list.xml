@@ -6,16 +6,61 @@
     android:layout_height="match_parent"
     tools:context="com.goplayer.video_player.VideoListActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:contentInsetLeft="0dp"
+        android:contentInsetStart="0dp"
+        android:elevation="0dp"
+        android:layoutDirection="ltr"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:elevation="0dp">
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/searchRL"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/coolGrey"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/backIV"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingEnd="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:paddingStart="5dp"
+            android:src="@drawable/ic_arrow_back" />
+
+        <EditText
+            android:id="@+id/searchET"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/backIV"
+            android:layout_toRightOf="@+id/backIV"
+            android:background="@null"
+            android:hint="Search..."
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorBlack" />
+
+    </RelativeLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/swipeLayout">
+        android:layout_below="@+id/toolbar">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/videosRCV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/videosRCV">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
