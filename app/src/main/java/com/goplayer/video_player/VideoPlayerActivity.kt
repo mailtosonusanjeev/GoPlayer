@@ -25,6 +25,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
+//This my second change
 class VideoPlayerActivity : AppCompatActivity() {
 
     private var simpleExoPlayerView: SimpleExoPlayerView? = null
