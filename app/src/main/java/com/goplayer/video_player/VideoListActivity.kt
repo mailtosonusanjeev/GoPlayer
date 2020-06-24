@@ -36,7 +36,7 @@ import android.view.ViewAnimationUtils
 import com.goplayer.utils.hideByCircularAnimation
 import com.goplayer.utils.showByCircularAnimation
 
-
+//This is my first change
 class VideoListActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     private var videoList: ArrayList<String>? = null
